@@ -102,7 +102,7 @@ function isValidRoute(trainType, from, to) {
     // Basic city normalization
     const nFrom = from.toLowerCase();
     const nTo = to.toLowerCase();
-    
+
     for (const line in shinkansenLines) {
         const data = shinkansenLines[line];
         if (data.trains.includes(trainType)) {
@@ -119,16 +119,16 @@ function generateTimes(trainNumber) {
     const num = parseInt(trainNumber) || 100;
     const depHour = (num % 12) + 6; // Starts at 6 AM onwards
     const depMin = (num * 7) % 60;
-    
+
     // Duration based on train number as seed (mock)
     const durationMin = (num % 120) + 45;
-    
+
     const depTime = `${String(depHour).padStart(2, '0')}:${String(depMin).padStart(2, '0')}`;
-    
+
     let arrHour = depHour + Math.floor((depMin + durationMin) / 60);
     let arrMin = (depMin + durationMin) % 60;
     const arrTime = `${String(arrHour % 24).padStart(2, '0')}:${String(arrMin).padStart(2, '0')}`;
-    
+
     return { dep: depTime, arr: arrTime, duration: durationMin };
 }
 
@@ -136,7 +136,7 @@ function parseItinerary(text) {
     const lines = text.split('\n').map(l => l.trim()).filter(l => l);
     const parsed = [];
     const regex = /([A-Za-z]+)\s+(\d+)?\s*([A-Za-z-]+)\s*(?:->|-|to)\s*([A-Za-z-]+)/i;
-    
+
     lines.forEach(line => {
         const match = line.match(regex);
         if (match) {
@@ -144,7 +144,7 @@ function parseItinerary(text) {
             const trainNumber = match[2] || "0";
             const from = match[3].charAt(0).toUpperCase() + match[3].slice(1).toLowerCase();
             const to = match[4].charAt(0).toUpperCase() + match[4].slice(1).toLowerCase();
-            
+
             parsed.push({ original: line, trainType, trainNumber, from, to });
         }
     });
@@ -154,15 +154,15 @@ function parseItinerary(text) {
 async function calculateRoute() {
     const text = document.getElementById('itinerary').value;
     const segments = parseItinerary(text);
-    
+
     routeLines.forEach(line => map.removeLayer(line));
     routeMarkers.forEach(marker => map.removeLayer(marker));
     routeLines = [];
     routeMarkers = [];
-    
+
     const listEl = document.getElementById('parsed-list');
     listEl.innerHTML = '';
-    
+
     if (segments.length === 0) {
         listEl.innerHTML = '<li class="empty-state">No valid routes found.</li>';
         resetStats();
@@ -178,7 +178,7 @@ async function calculateRoute() {
     for (let index = 0; index < segments.length; index++) {
         const seg = segments[index];
         const li = document.createElement('li');
-        
+
         const fromCoords = cityCoordinates[seg.from];
         const toCoords = cityCoordinates[seg.to];
         const isValid = isValidRoute(seg.trainType, seg.from, seg.to);
@@ -195,20 +195,20 @@ async function calculateRoute() {
             li.style.borderLeftColor = segmentColor;
 
             const times = generateTimes(seg.trainNumber);
-            
+
             try {
                 const response = await fetch(`https://router.project-osrm.org/route/v1/driving/${fromCoords[1]},${fromCoords[0]};${toCoords[1]},${toCoords[0]}?overview=full&geometries=geojson`);
                 const data = await response.json();
-                
+
                 if (data.routes && data.routes.length > 0) {
                     const geojsonLayer = L.geoJSON(data.routes[0].geometry, {
                         style: { color: segmentColor, weight: 4, opacity: 0.8 }
                     }).addTo(map);
                     routeLines.push(geojsonLayer);
-                    
+
                     const distKm = data.routes[0].distance / 1000;
                     totalKm += distKm;
-                    
+
                     // Use speed to adjust "mock" duration for stats if it feels more realistic
                     const routeMinutes = (distKm / (speedKmh * 0.7)) * 60;
                     totalMinutes += routeMinutes;
@@ -241,7 +241,7 @@ async function calculateRoute() {
                 const polyline = L.polyline([fromCoords, toCoords], { color: segmentColor, weight: 4, dashArray: '8, 8' }).addTo(map);
                 routeLines.push(polyline);
             }
-            
+
             allCoordinates.push(fromCoords, toCoords);
         } else {
             li.style.borderLeftColor = '#ef4444';
@@ -273,7 +273,7 @@ function updateDashboard(km, min, speed, cities) {
     animateValue("val-distance", 0, Math.round(valDistance), 1000, unitDist);
     animateValue("val-speed", 0, Math.round(valSpeed), 1000, unitSpeed);
     animateValue("val-cities", 0, cities, 1000, "");
-    
+
     const h = Math.floor(min / 60);
     const m = Math.round(min % 60);
     document.getElementById('val-time').innerText = `${h}h ${m}m`;
@@ -301,16 +301,16 @@ function animateValue(id, start, end, duration, suffix) {
 }
 
 // Unit Toggle Handler
-document.getElementById('toggle-units').addEventListener('click', function() {
+document.getElementById('toggle-units').addEventListener('click', function () {
     isMetric = !isMetric;
     this.classList.toggle('active');
     document.getElementById('unit-metric').classList.toggle('active');
     document.getElementById('unit-imperial').classList.toggle('active');
-    
+
     // Update labels
     document.getElementById('label-distance').innerText = isMetric ? 'Distance (KM)' : 'Distance (MI)';
     document.getElementById('label-speed').innerText = isMetric ? 'Max Speed (KM/H)' : 'Max Speed (MPH)';
-    
+
     // Re-run calculation if itinerary exists
     if (document.getElementById('itinerary').value.trim()) {
         calculateRoute();
@@ -328,7 +328,6 @@ document.getElementById('track-btn').addEventListener('click', () => {
 const menuToggle = document.getElementById('menu-toggle');
 const sidebar = document.querySelector('.sidebar');
 const overlay = document.getElementById('sidebar-overlay');
-const closeBtn = document.getElementById('sidebar-close');
 
 function toggleSidebar(show) {
     const isActive = show !== undefined ? show : !sidebar.classList.contains('active');
@@ -339,7 +338,6 @@ function toggleSidebar(show) {
 
 menuToggle.addEventListener('click', () => toggleSidebar());
 overlay.addEventListener('click', () => toggleSidebar(false));
-closeBtn.addEventListener('click', () => toggleSidebar(false));
 
 // Prefill and Run
 document.getElementById('itinerary').value = "Hakutaka 569 Tokyo -> Nagano\nKagayaki 536 Nagano -> Tokyo";
