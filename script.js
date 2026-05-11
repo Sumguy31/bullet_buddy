@@ -317,8 +317,38 @@ document.getElementById('toggle-units').addEventListener('click', function() {
     }
 });
 
-document.getElementById('track-btn').addEventListener('click', calculateRoute);
+document.getElementById('track-btn').addEventListener('click', () => {
+    calculateRoute();
+    if (window.innerWidth <= 768) {
+        toggleSidebar(false);
+    }
+});
+
+// Mobile Menu Toggle
+const menuToggle = document.getElementById('menu-toggle');
+const sidebar = document.querySelector('.sidebar');
+const overlay = document.getElementById('sidebar-overlay');
+const closeBtn = document.getElementById('sidebar-close');
+
+function toggleSidebar(show) {
+    const isActive = show !== undefined ? show : !sidebar.classList.contains('active');
+    sidebar.classList.toggle('active', isActive);
+    menuToggle.classList.toggle('active', isActive);
+    overlay.classList.toggle('active', isActive);
+}
+
+menuToggle.addEventListener('click', () => toggleSidebar());
+overlay.addEventListener('click', () => toggleSidebar(false));
+closeBtn.addEventListener('click', () => toggleSidebar(false));
 
 // Prefill and Run
 document.getElementById('itinerary').value = "Hakutaka 569 Tokyo -> Nagano\nKagayaki 536 Nagano -> Tokyo";
-setTimeout(calculateRoute, 500);
+setTimeout(() => {
+    calculateRoute();
+    map.invalidateSize();
+}, 500);
+
+// Ensure map handles container size changes
+window.addEventListener('resize', () => {
+    map.invalidateSize();
+});
