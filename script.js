@@ -60,10 +60,10 @@ L.control.zoom({
     position: 'topright'
 }).addTo(map);
 
-// Add tile layer (using standard OpenStreetMap, will be dark-filtered via CSS)
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+// Add tile layer (using CartoDB Dark Matter for simplified high-contrast look)
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     maxZoom: 19,
-    attribution: '© OpenStreetMap contributors'
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
 }).addTo(map);
 
 let routeLines = [];
@@ -172,6 +172,9 @@ document.getElementById('track-btn').addEventListener('click', async () => {
             // Use different colors for different segments to make them pop
             const colors = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
             const segmentColor = colors[index % colors.length];
+            
+            // Color code the parsed itinerary list item
+            li.style.borderLeftColor = segmentColor;
             
             const latlngs = [fromCoords, toCoords];
             
