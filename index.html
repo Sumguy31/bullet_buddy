@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shinkansen Tracker</title>
+    <meta name="description" content="Track your train travels across Japan">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <header>
+                <h1>🚄 Shinkansen Tracker</h1>
+                <p>Map your journey across Japan</p>
+            </header>
+            
+            <div class="input-section">
+                <label for="itinerary">Your Itinerary</label>
+                <textarea id="itinerary" placeholder="Example:&#10;Hakutaka 569 Tokyo -> Nagano&#10;Kagayaki 536 Nagano -> Tokyo"></textarea>
+                <button id="track-btn">Calculate Route</button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🛣️</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Miles Traveled</span>
+                        <span class="stat-value" id="val-distance">0 mi</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Time in Transit</span>
+                        <span class="stat-value" id="val-time">0h 0m</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Top Speed</span>
+                        <span class="stat-value" id="val-speed">0 mph</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏙️</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Cities Visited</span>
+                        <span class="stat-value" id="val-cities">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="itinerary-list-container">
+                <h3>Parsed Itinerary</h3>
+                <ul id="parsed-list" class="parsed-list">
+                    <li class="empty-state">No itinerary entered yet.</li>
+                </ul>
+            </div>
+        </aside>
+        
+        <main class="map-container">
+            <div id="map"></div>
+        </main>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="script.js"></script>
+</body>
+</html>
