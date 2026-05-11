@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shinkansen Tracker</title>
+    <title>Bullet Buddy</title>
     <meta name="description" content="Track your train travels across Japan">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,8 +17,17 @@
     <div class="app-container">
         <aside class="sidebar">
             <header>
-                <h1>🚄 Shinkansen Tracker</h1>
-                <p>Map your journey across Japan</p>
+                <h1>🚄 Bullet Buddy</h1>
+                <div class="header-flex">
+                    <p>Map your journey across Japan</p>
+                    <div class="unit-toggle">
+                        <span id="unit-imperial" class="unit-label active">IMP</span>
+                        <div class="toggle-switch" id="toggle-units">
+                            <div class="toggle-knob"></div>
+                        </div>
+                        <span id="unit-metric" class="unit-label">MET</span>
+                    </div>
+                </div>
             </header>
             
             <div class="input-section">
@@ -31,21 +40,21 @@
                 <div class="stat-card">
                     <div class="stat-icon">🛣️</div>
                     <div class="stat-info">
-                        <span class="stat-label">Miles Traveled</span>
+                        <span class="stat-label" id="label-distance">Distance</span>
                         <span class="stat-value" id="val-distance">0 mi</span>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">⏱️</div>
                     <div class="stat-info">
-                        <span class="stat-label">Time in Transit</span>
+                        <span class="stat-label">Total Transit</span>
                         <span class="stat-value" id="val-time">0h 0m</span>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">⚡</div>
                     <div class="stat-info">
-                        <span class="stat-label">Top Speed</span>
+                        <span class="stat-label" id="label-speed">Max Speed</span>
                         <span class="stat-value" id="val-speed">0 mph</span>
                     </div>
                 </div>
@@ -59,7 +68,7 @@
             </div>
 
             <div class="itinerary-list-container">
-                <h3>Parsed Itinerary</h3>
+                <h3>Itinerary</h3>
                 <ul id="parsed-list" class="parsed-list">
                     <li class="empty-state">No itinerary entered yet.</li>
                 </ul>

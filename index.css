@@ -57,7 +57,63 @@ header h1 {
 header p {
     color: var(--text-secondary);
     font-size: 14px;
+}
+
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 24px;
+}
+
+.unit-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--bg-primary);
+    padding: 4px 8px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.unit-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+}
+
+.unit-label.active {
+    color: var(--accent-blue);
+}
+
+.toggle-switch {
+    width: 32px;
+    height: 16px;
+    background-color: var(--bg-tertiary);
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.toggle-switch.active {
+    background-color: var(--accent-blue);
+}
+
+.toggle-knob {
+    width: 12px;
+    height: 12px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.2s;
+}
+
+.toggle-switch.active .toggle-knob {
+    transform: translateX(16px);
 }
 
 .input-section {
@@ -188,8 +244,67 @@ button:active {
     border-left: 4px solid var(--accent-blue);
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
     box-shadow: var(--shadow);
+}
+
+.itinerary-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.itinerary-route {
+    display: flex;
+    flex-direction: column;
+}
+
+.itinerary-cities {
+    font-weight: 500;
+}
+
+.itinerary-train {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.itinerary-times {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 12px;
+}
+
+.time-label {
+    font-size: 9px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+.itinerary-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border-color);
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-label {
+    font-size: 9px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+.detail-value {
+    font-size: 12px;
+    font-weight: 600;
 }
 
 .parsed-list li.empty-state {
